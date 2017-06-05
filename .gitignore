@@ -8,3 +8,6 @@ project/
 lib_managed/
 src_managed/
 project/boot/
+.gitignore
+build.sbt
+src/
