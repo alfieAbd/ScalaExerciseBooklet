@@ -242,12 +242,16 @@ def advancedMatchingMaths(x: Int, y: Int, maths: String): Unit = {
 
   mathsType match {
 
-    case check:Int if(check==0) => println(y)
-    case "secondZero" => println(x)
-    case "bothZero" => println(0)
     case "Add" => println(x+y)
     case "Multiply" => println(x*y)
     case _ => println("Cannot compute")
+    case check:Any if(x==0)
+    => println(y)
+    case check:Any if(y==0)
+    => println(x)
+    case check:Any if(x==0 && y==0)
+    => println(0)
+
 
   }
 
@@ -255,8 +259,131 @@ def advancedMatchingMaths(x: Int, y: Int, maths: String): Unit = {
 
 advancedMatchingMaths(0,3,"")
 advancedMatchingMaths(2,0,"")
-advancedMatchingMaths(2,3,"")
-advancedMatchingMaths(2,3,"")
-advancedMatchingMaths(2,3,"")
-advancedMatchingMaths(2,3,"")
+advancedMatchingMaths(2,3,"Multiply")
+advancedMatchingMaths(2,3,"Add")
+advancedMatchingMaths(0,0,"")
+advancedMatchingMaths(0,3,"Add")
+advancedMatchingMaths(0,3,"Divide")
 
+/*
+
+Needs to take one argument in the form of an array/tuple and return the two arguments in inverted order.
+constructor pattern.
+
+ */
+
+
+def patternSwap(x: Any): Any = x match {
+
+    /*
+    Create new objects(Array/List/Tuple) with new ordering
+     */
+
+  case Array(a,b) => println(Array(b,a))
+  case List(a,b) => println(List(b,a))
+  case Tuple2(a,b) => println(Tuple2(b,a))
+  case _ => "Invalid Input"
+
+  }
+
+var list = List(1,2)
+var arr = Array(1,2)
+var tup1 = Tuple2(1,2)
+
+patternSwap(list)
+patternSwap(arr)
+patternSwap(tup1)
+
+def functional(): Unit = {
+
+  java.util.TimeZone.getAvailableIDs()
+
+}
+
+
+
+
+def blackJack(firstNumber: Int, secondNumber: Int): Unit = {
+
+  /*
+
+  Check if a OR b > 21, output 0
+  Check if a > b, output a
+  Check if b > a, output b
+
+   */
+
+  if(firstNumber > 21 || secondNumber > 21)
+    println(0)
+  else if(firstNumber > secondNumber)
+    println(firstNumber)
+  else if(secondNumber > firstNumber)
+    println(secondNumber)
+
+}
+
+blackJack(18,21)
+blackJack(20,18)
+blackJack(22,22)
+
+def uniqueSum(integerOne: Int, integerTwo: Int, integerThree: Int): Unit = {
+
+  /*
+  Return the sum of all unique integers (i.e. Duplicates are not added to the sum
+   */
+
+  var sum = 0
+
+  if(integerOne == integerTwo && integerOne == integerThree){
+    println(sum)
+  }
+  else if(integerOne == integerTwo) {
+    sum += integerThree
+    println(sum)
+  }
+  else if(integerOne == integerThree) {
+    sum += integerTwo
+    println(sum)
+  }
+  else if(integerTwo == integerThree) {
+    sum += integerOne
+    println(sum)
+  }
+  else {
+    sum = integerOne + integerTwo + integerThree
+    println(sum)
+
+  }
+}
+
+uniqueSum(1,2,3)
+uniqueSum(3,3,3)
+uniqueSum(1,1,2)
+
+
+def isTooHot(temperature: Int, isSummer: Boolean): Unit ={
+
+  /*
+  60 >= limits non summer <= 90
+  60 >= limits summer <= 100
+   */
+
+  if(isSummer == false) {
+    if (temperature >= 60 && temperature <= 90)
+      println(true)
+    else
+      println(false)
+  }
+  else {
+    if (temperature >= 60 && temperature <= 100)
+      println(true)
+    else
+     println(false)
+
+  }
+
+}
+
+isTooHot(80,false)
+isTooHot(100,false)
+isTooHot(100,true)
