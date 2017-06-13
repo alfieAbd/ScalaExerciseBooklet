@@ -74,11 +74,25 @@ def conditionalMaths(x: Int, y: Int, check: Boolean): Unit ={
    println(x+y)
   else
     println(x*y)
-
 }
 
 conditionalMaths(2,3,true)
 conditionalMaths(2,3,false)
+
+/*
+Rewritten conditionalMaths to have be more functional. Pattern Matching to be used.
+ */
+
+def conditionalMathsFunctional(num1: Int, num2: Int, check: Boolean) = check match {
+
+case true => num1 + num2
+case _ => num1 * num2
+
+}
+
+conditionalMathsFunctional(2,3,true)
+conditionalMathsFunctional(2,3,false)
+
 
 def conditionalMaths2(x: Int, y: Int, check: Boolean): Unit = {
 
@@ -107,6 +121,32 @@ conditionalMaths2(2,3,true)
 conditionalMaths2(2,0,false)
 conditionalMaths2(0,0,true)
 
+/*
+Rewritten conditionalMaths2 method to look less like Java and more like Scala.
+ */
+
+def conditionalMaths2Functional(x: Int, y: Int, check: Boolean) = check match {
+
+  case true | false if(x==0) => y
+  case true | false if(y==0) => x
+  case true | false if(x==0 && y==0) => 0
+  case true => x + y
+  case _ => x * y
+
+}
+
+conditionalMaths2Functional(2,3,true)
+conditionalMaths2Functional(2,0,false)
+conditionalMaths2Functional(0,0,true)
+
+/*
+@param word
+@param quantity
+
+Outputs @param word @param quantity amount of times
+
+ */
+
 def repeatString(word: String, quantity: Int): Unit ={
 
   for(i<-1 to quantity)
@@ -115,7 +155,6 @@ def repeatString(word: String, quantity: Int): Unit ={
 }
 
 repeatString("Hi",3)
-
 
 /*
 Use a StringBuffer method by using "*" operator which allows multiple outputs of a String
@@ -129,6 +168,21 @@ def rectangleString(word: String, quantity: Int): Unit = {
 }
 
 rectangleString("H",4)
+
+def rectangleStringV2(word: String, quantity: Int, width: Int): Unit = {
+
+  // Need to figure out the syntax for performing a nested iteration loop.
+
+
+  for(i <- 1 to quantity) {
+    for (j <- 1 to width) {
+    println(word)
+  }
+    println()
+  }
+}
+
+rectangleStringV2("H",4,4)
 
 def fizzBuzzPrint(s1: String, s2: String, number: Int): Unit ={
 
@@ -167,7 +221,6 @@ def recursiveStringRepeat(word: String, quantity: Int): Unit ={
 recursiveStringRepeat("Hi",3)
 
 def rectangleStringRepeat(word: String, quantity: Int, columns: Int): Unit ={
-
 
   if(quantity == 0)
     println(" ")
@@ -208,182 +261,3 @@ def recursiveFizzBuzz(s1: String, s2: String, number: Int, iter: Int): Unit = {
 
 recursiveFizzBuzz("Fizz","Buzz",15,15)
 
-def matchingMaths(x: Int, y: Int, maths: String): Unit ={
-
-  // Set the base case to the input String
-
-  val mathsType = maths
-
-  // Add all the cases, making sure to use the wildcard to catch any other inputs
-
-  mathsType match {
-
-    case "Add" => println(x+y)
-    case "Multiply" => println(x*y)
-    case _ => println("Cannot compute")
-  }
-
-}
-
-matchingMaths(2,3,"Add")
-matchingMaths(2,3,"Multiply")
-matchingMaths(2,3,"Divide")
-
-def advancedMatchingMaths(x: Int, y: Int, maths: String): Unit = {
-
-  /*
-  If x is zero, print y,
-  if y is zero, print x,
-  if x and y is zero, print zero,
-  else, run through previous conditions from previous exercise
-   */
-
-  val mathsType = maths
-
-  mathsType match {
-
-    case "Add" => println(x+y)
-    case "Multiply" => println(x*y)
-    case _ => println("Cannot compute")
-    case check:Any if(x==0)
-    => println(y)
-    case check:Any if(y==0)
-    => println(x)
-    case check:Any if(x==0 && y==0)
-    => println(0)
-
-
-  }
-
-}
-
-advancedMatchingMaths(0,3,"")
-advancedMatchingMaths(2,0,"")
-advancedMatchingMaths(2,3,"Multiply")
-advancedMatchingMaths(2,3,"Add")
-advancedMatchingMaths(0,0,"")
-advancedMatchingMaths(0,3,"Add")
-advancedMatchingMaths(0,3,"Divide")
-
-/*
-
-Needs to take one argument in the form of an array/tuple and return the two arguments in inverted order.
-constructor pattern.
-
- */
-
-
-def patternSwap(x: Any): Any = x match {
-
-    /*
-    Create new objects(Array/List/Tuple) with new ordering
-     */
-
-  case Array(a,b) => println(Array(b,a))
-  case List(a,b) => println(List(b,a))
-  case Tuple2(a,b) => println(Tuple2(b,a))
-  case _ => "Invalid Input"
-
-  }
-
-var list = List(1,2)
-var arr = Array(1,2)
-var tup1 = Tuple2(1,2)
-
-patternSwap(list)
-patternSwap(arr)
-patternSwap(tup1)
-
-def functional(): Unit = {
-
-  java.util.TimeZone.getAvailableIDs()
-
-}
-
-
-
-
-def blackJack(firstNumber: Int, secondNumber: Int): Unit = {
-
-  /*
-
-  Check if a OR b > 21, output 0
-  Check if a > b, output a
-  Check if b > a, output b
-
-   */
-
-  if(firstNumber > 21 || secondNumber > 21)
-    println(0)
-  else if(firstNumber > secondNumber)
-    println(firstNumber)
-  else if(secondNumber > firstNumber)
-    println(secondNumber)
-
-}
-
-blackJack(18,21)
-blackJack(20,18)
-blackJack(22,22)
-
-def uniqueSum(integerOne: Int, integerTwo: Int, integerThree: Int): Unit = {
-
-  /*
-  Return the sum of all unique integers (i.e. Duplicates are not added to the sum
-   */
-
-  var sum = 0
-
-  if(integerOne == integerTwo && integerOne == integerThree){
-    println(sum)
-  }
-  else if(integerOne == integerTwo) {
-    sum += integerThree
-    println(sum)
-  }
-  else if(integerOne == integerThree) {
-    sum += integerTwo
-    println(sum)
-  }
-  else if(integerTwo == integerThree) {
-    sum += integerOne
-    println(sum)
-  }
-  else {
-    sum = integerOne + integerTwo + integerThree
-    println(sum)
-
-  }
-}
-
-uniqueSum(1,2,3)
-uniqueSum(3,3,3)
-uniqueSum(1,1,2)
-
-
-def isTooHot(temperature: Int, isSummer: Boolean): Unit ={
-
-  /*
-  60 >= limits non summer <= 90
-  60 >= limits summer <= 100
-   */
-
-  if(isSummer == false) {
-    if (temperature >= 60 && temperature <= 90)
-      println(true)
-    else
-      println(false)
-  }
-  else {
-    if (temperature >= 60 && temperature <= 100)
-      println(true)
-    else
-     println(false)
-
-  }
-
-}
-
-isTooHot(80,false)
-isTooHot(100,false)
-isTooHot(100,true)
