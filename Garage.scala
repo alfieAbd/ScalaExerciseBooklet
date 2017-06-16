@@ -13,16 +13,9 @@
 class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
              allPersonelle: scala.collection.mutable.ListBuffer[Person]) {
 
-//  var parts: String = vehicleParts
-//  var labor: Int = laborHours
   var garageState: scala.collection.mutable.ListBuffer[Vehicle] = allVehicles
   var allPeople: scala.collection.mutable.ListBuffer[Person] = allPersonelle
-  var toFix: Boolean = true
-
-
-//  def printParts{ println(parts) }
-
-//  def printLabor{ println(labor) }
+  var isOpen = false
 
   /**
     * Method to add vehicles to a garage. It will add all relevant details as specified in
@@ -33,8 +26,6 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     */
 
   def addVehicle(vehicle: Vehicle): Unit ={
-
-    //Add vehicle to garage
 
     garageState += vehicle
 
@@ -49,14 +40,14 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     *
     */
 
-  def removeVehicle(vehicleID: String): Unit = {
+  def removeVehicle(vehicleID: Vehicle): Unit = {
 
     // Remove vehicle from garageState using vehicleID as identifier.
       // Check through ListBuffer for match in vehicleID.
         // If there is a match, remove vehicle that contains that ID. (Use filter as List is immutable)
 
- //   garageState.foreach(garageState.map())
-
+    garageState -= vehicleID
+    println(s"The vehicle $vehicleID has been successfully removed")
 
   }
 
@@ -71,15 +62,8 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
 
   def registerEmployee(employee: Employee): Unit ={
 
-    // Check if employee already exists in the system
-      // Print a message
-    // Add employee to the allPersonelle Collection
-
-    if(allPersonelle.contains(employee)) {
-      println("Employee is already registered")
-    } else {
-      allPersonelle += employee
-    }
+    allPeople += employee
+    println("Employee successfully registered")
 
   }
 
@@ -96,8 +80,8 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
       // If toFix is true then the vehicle is still undergoing repairs and the system will state this.
       // If toFix is false then the vehicle is ready for collection for the customer.
 
-    case vehicleBroken if toFix == true => println(s"$vehicle is currently being repaired")
-    case vehicleFixed if toFix == false => println(s"$vehicle is ready for collection")
+    case vehicleBroken if vehicle.getisBroken() == true => println(s"$vehicle is currently being repaired")
+    case vehicleFixed if vehicle.getisBroken() == false => println(s"$vehicle is ready for collection")
     case _ => println("Vehicle does not exist in the system")
 
   }
@@ -109,7 +93,17 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     *
     */
 
-  def calculateBills(labor: Int, parts: String){}
+  def calculateBills(laborHours: Int, part: Part): Int ={
+
+    // Check to see if the vehicle is broken.
+       // If vehicle is broken, see what parts are broken and get total cost. (From part class)
+          // Add cost of parts to cost of labor (labor is calculated by multiplying laborHours by 20 which is base hourly charge
+
+    var laborCost = laborHours*20
+    var totalCost = laborCost + part.getCost()
+
+    totalCost
+  }
 
   /**
     * Method that will print the current status of the garage. This will include which vehicles are being
@@ -117,7 +111,11 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     *
     */
 
-  def outputGarageContents{}
+  def outputGarageContents: Unit ={
+
+    println(garageState,allPeople)
+
+  }
 
   /**
     * Method to start the garage working day.
@@ -125,14 +123,14 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     */
 
 
-  def openGarage{}
+  def openGarage{ isOpen = true }
 
   /**
     * Method to close the garage working day, will have same operations as openGarage, but in reverse order.
     *
     */
 
-  def closeGarage{}
+  def closeGarage{ isOpen = false }
 
   override def toString: String = s"The following vehicles are currently in the garage: $allVehicles" + s"\nThe following " +
     s"persons are currently at the garage: $allPersonelle"

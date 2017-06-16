@@ -9,7 +9,7 @@
   */
 
 
-abstract class Person(surname: String, firstName: String, dateOfBirth: String, address: String, contactNumber: Int) {
+class Person(surname: String, firstName: String, dateOfBirth: String, address: String, contactNumber: Int) {
 
   def sName: String = surname
   def fName: String = firstName
