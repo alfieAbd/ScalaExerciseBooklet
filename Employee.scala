@@ -10,10 +10,13 @@ class Employee(surname: String, firstName: String, dateOfBirth: String, address:
 
   var eID: Int = employeeID
   var title: String = jobTitle
+  var isAvailable:Boolean = true
 
   def printEmployeeID { println(eID) }
 
   def printJobTitle { println(title) }
+
+  def getIsAvailable() { isAvailable }
 
   override def toString(): String = super.toString() + s"\nEmployee ID: $eID" + s"\nJob Title: $title"
 

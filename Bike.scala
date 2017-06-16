@@ -1,3 +1,5 @@
+import scala.collection.mutable.ListBuffer
+
 /**
   * Created by alfie on 12/06/2017.
   *
@@ -5,8 +7,8 @@
   *
   */
 
-class Bike(vehicleID: String, carModel: String, vehicleColor: String, engineSize: Int, mileAge: Int, hasSideCar: Boolean)
-  extends Vehicle(vehicleID, carModel, vehicleColor, engineSize, mileAge){
+class Bike(vehicleID: String, carModel: String, vehicleColor: String, engineSize: Int, mileAge: Int, parts: ListBuffer[Part], hasSideCar: Boolean)
+  extends Vehicle(vehicleID, carModel, vehicleColor, engineSize, mileAge, parts){
 
   var sideCar: Boolean = hasSideCar
 

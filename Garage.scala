@@ -1,3 +1,4 @@
+import scala.collection.mutable.ListBuffer
 /**
   * Created by alfie on 12/06/2017.
   *
@@ -10,27 +11,26 @@
   *
   */
 
-class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
-             allPersonelle: scala.collection.mutable.ListBuffer[Person]) {
+class Garage(laborCharge: Int, hoursWork: Int) {
 
-  var garageState: scala.collection.mutable.ListBuffer[Vehicle] = allVehicles
-  var allPeople: scala.collection.mutable.ListBuffer[Person] = allPersonelle
+  var allVehicles: ListBuffer[Vehicle] = ListBuffer.empty
+  var allPersonelle: ListBuffer[Person] = ListBuffer.empty
   var isOpen = false
+  var workAvailable:Boolean = false
 
   /**
     * Method to add vehicles to a garage. It will add all relevant details as specified in
-    * Vehicle class.
+    * Vehicle class. Vehicle object will be added to garageState ListBuffer[Vehicle]
     *
     * Will use: vehicleID, model, color, engine size, mileage, 'door' (Cars), 'isManual' (Car), 'sideCar' (Bike)
     *
     */
 
-  def addVehicle(vehicle: Vehicle): Unit ={
+  def addVehicle(vehicle: Vehicle): Unit = vehicle match {
 
-    garageState += vehicle
-
+    case a if vehicle != null && isOpen == true  => allVehicles += vehicle; workAvailable = true; println("Vehicle successfully added.")
+    case _ => println("Vehicle not added")
   }
-
 
   /**
     * Method to remove vehicles to a garage. It will remove vehicles from the Collection. It should use either
@@ -40,16 +40,16 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     *
     */
 
-  def removeVehicle(vehicleID: Vehicle): Unit = {
-
-    // Remove vehicle from garageState using vehicleID as identifier.
-      // Check through ListBuffer for match in vehicleID.
-        // If there is a match, remove vehicle that contains that ID. (Use filter as List is immutable)
-
-    garageState -= vehicleID
-    println(s"The vehicle $vehicleID has been successfully removed")
-
-  }
+  def removeVehicle(vehicleID: String): Unit = {
+    def iterator(i: Int, vehicleID: String): Unit = i match {
+        // Check if the vehicle is in the garage
+      case a if i == allVehicles.size => println(s"The vehicle $vehicleID cannot be found in the garage")
+        // Check if vehicle ID matches ID in list
+      case b if allVehicles(i).getVID == vehicleID => allVehicles(i) == null;  allVehicles.remove(i); println(s"Vehicle $vehicleID has been removed from the garage")
+        // If neither condition is met, check the next index of the list.
+      case _ => iterator(i+1, vehicleID)
+      }
+    }
 
   /**
     * Method to register new Employees that will be added to the Collection.
@@ -59,12 +59,10 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     *
     */
 
+  def registerEmployee(employee: Employee): Unit = employee match {
 
-  def registerEmployee(employee: Employee): Unit ={
-
-    allPeople += employee
-    println("Employee successfully registered")
-
+    case a if employee != null && !allPersonelle.contains(employee) => allPersonelle += employee; workAvailable = true; println("Employee successfully registered")
+    case _ => println("Employee registration unsuccessful")
   }
 
   /**
@@ -75,15 +73,19 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
     *
     */
 
-  def fixingVehicles(vehicle: Vehicle): Unit = vehicle match {
+  def fixingVehicles(vehicle: Vehicle): Unit = {
 
-      // If toFix is true then the vehicle is still undergoing repairs and the system will state this.
-      // If toFix is false then the vehicle is ready for collection for the customer.
+    var i = 0
 
-    case vehicleBroken if vehicle.getisBroken() == true => println(s"$vehicle is currently being repaired")
-    case vehicleFixed if vehicle.getisBroken() == false => println(s"$vehicle is ready for collection")
-    case _ => println("Vehicle does not exist in the system")
+    while(allVehicles.nonEmpty) {
 
+      vehicle match {
+
+        case a if vehicle.getisBroken() => println(s"$vehicle is currently being repaired"); !vehicle.getisBroken(); allVehicles.remove(i); i += 1
+        case b if !vehicle.getisBroken() => println(s"$vehicle is ready for collection"); i += 1
+        case _ => println("Vehicle does not exist in the system")
+      }
+    }
   }
 
   /**
@@ -99,8 +101,8 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
        // If vehicle is broken, see what parts are broken and get total cost. (From part class)
           // Add cost of parts to cost of labor (labor is calculated by multiplying laborHours by 20 which is base hourly charge
 
-    var laborCost = laborHours*20
-    var totalCost = laborCost + part.getCost()
+    val laborCost = laborHours * 20
+    val totalCost = laborCost + part.getCost()
 
     totalCost
   }
@@ -113,7 +115,7 @@ class Garage(allVehicles: scala.collection.mutable.ListBuffer[Vehicle],
 
   def outputGarageContents: Unit ={
 
-    println(garageState,allPeople)
+    println(allVehicles,allPersonelle)
 
   }
 

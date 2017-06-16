@@ -15,6 +15,7 @@ class Part(partName: String, partCost: Int, isBroke: Boolean, repairTime: Int) {
 
   def getCost():Int = { cost }
   def getRepairTime() { timeToRepair }
+  def getIsBroken() { broken }
 
   /**
     *  Will take a part and calculate the total cost of broken parts. Will return total cost of repair to get all
